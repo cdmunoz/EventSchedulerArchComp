@@ -39,7 +39,7 @@ class EventDaoTest {
   fun setup() {
     val instrumentation = InstrumentationRegistry.getInstrumentation()
     val app = instrumentation.targetContext.applicationContext as MockSchedulerApplication
-    val component = app.countDownComponent as MockSchedulerComponent
+    val component = app.schedulerComponent as MockSchedulerComponent
     component.inject(this)
 
     eventDao = eventDatabase.eventDao()

@@ -10,7 +10,7 @@ import timber.log.Timber
 
 open class SchedulerApplication : Application() {
 
-  open val countDownComponent: SchedulerComponent = DaggerSchedulerComponent.builder()
+  open val schedulerComponent: SchedulerComponent = DaggerSchedulerComponent.builder()
       .applicationModule(ApplicationModule(this))
       .schedulerModule(SchedulerModule())
       .build()

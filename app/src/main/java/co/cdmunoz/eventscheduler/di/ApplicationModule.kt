@@ -7,11 +7,11 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class ApplicationModule(private val countdownApplication: SchedulerApplication) {
+class ApplicationModule(private val schedulerApplication: SchedulerApplication) {
 
   @Provides
-  fun applicationContext(): Context = countdownApplication
+  fun applicationContext(): Context = schedulerApplication
 
   @Provides
-  fun application(): Application = countdownApplication
+  fun application(): Application = schedulerApplication
 }

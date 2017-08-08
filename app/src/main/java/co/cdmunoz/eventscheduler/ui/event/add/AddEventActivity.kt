@@ -1,16 +1,14 @@
-package co.cdmunoz.eventscheduler.ui.add
+package co.cdmunoz.eventscheduler.ui.event.add
 
 import android.app.DatePickerDialog
 import android.arch.lifecycle.LifecycleActivity
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.widget.DatePicker
 import co.cdmunoz.eventscheduler.R
 import co.cdmunoz.eventscheduler.SchedulerApplication
 import co.cdmunoz.eventscheduler.di.SchedulerFactory
-import co.cdmunoz.eventscheduler.ui.event.add.AddEventViewModel
+import com.jakewharton.rxbinding2.widget.RxTextView
 import kotlinx.android.synthetic.main.activity_add_event.button_add
 import kotlinx.android.synthetic.main.activity_add_event.button_set_date
 import kotlinx.android.synthetic.main.activity_add_event.edit_text_description
@@ -27,45 +25,26 @@ class AddEventActivity : LifecycleActivity(), DatePickerDialog.OnDateSetListener
     setContentView(R.layout.activity_add_event)
 
     setupClickListeners()
-    setupViewModel()
+    setupViewModelAndBindings()
   }
 
-  private fun setupViewModel() {
-    val countdownApplication = application as SchedulerApplication
-    addEventViewModel = ViewModelProviders.of(this, SchedulerFactory(countdownApplication))
+  private fun setupViewModelAndBindings() {
+    val schedulerApplication = application as SchedulerApplication
+    addEventViewModel = ViewModelProviders.of(this, SchedulerFactory(schedulerApplication))
         .get(AddEventViewModel::class.java)
     edit_text_title.setText(addEventViewModel.eventName)
     edit_text_description.setText(addEventViewModel.eventDescription)
     text_view_date_set.text = addEventViewModel.eventDateTime.toString()
+
+    RxTextView.afterTextChangeEvents(
+        edit_text_title).subscribe { s -> addEventViewModel.eventName = s.editable().toString() }
+
+    RxTextView.afterTextChangeEvents(
+        edit_text_description).subscribe { s -> addEventViewModel.eventDescription = s.editable().toString() }
   }
 
   private fun setupClickListeners() {
-    edit_text_title.addTextChangedListener(object : TextWatcher {
-      override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
-      }
-
-      override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
-      }
-
-      override fun afterTextChanged(s: Editable) {
-        addEventViewModel.eventName = s.toString()
-      }
-    })
-    edit_text_description.addTextChangedListener(object : TextWatcher {
-      override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
-      }
-
-      override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
-      }
-
-      override fun afterTextChanged(s: Editable) {
-        addEventViewModel.eventDescription = s.toString()
-      }
-    })
     button_add.setOnClickListener { _ ->
       addEventViewModel.addEvent()
       finish()

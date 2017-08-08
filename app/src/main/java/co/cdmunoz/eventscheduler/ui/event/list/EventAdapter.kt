@@ -1,12 +1,12 @@
 package co.cdmunoz.eventscheduler.ui.event.list
 
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import co.cdmunoz.eventscheduler.R
 import co.cdmunoz.eventscheduler.entity.Event
 import co.cdmunoz.eventscheduler.ui.event.list.EventAdapter.EventViewHolder
+import co.cdmunoz.eventscheduler.utils.inflate
 import kotlinx.android.synthetic.main.list_item_event.view.button_delete
 import kotlinx.android.synthetic.main.list_item_event.view.text_view_countdown
 import kotlinx.android.synthetic.main.list_item_event.view.text_view_event_description
@@ -23,9 +23,7 @@ class EventAdapter internal constructor(items: List<Event>,
     }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
-    val v = LayoutInflater.from(parent.context)
-        .inflate(R.layout.list_item_event, parent, false)
-    return EventViewHolder(v)
+    return EventViewHolder(parent.inflate(R.layout.list_item_event))
   }
 
   override fun onBindViewHolder(holder: EventViewHolder, position: Int) {

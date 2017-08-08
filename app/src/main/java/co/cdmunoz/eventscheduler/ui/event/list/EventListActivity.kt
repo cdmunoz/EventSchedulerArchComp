@@ -13,7 +13,8 @@ import co.cdmunoz.eventscheduler.R
 import co.cdmunoz.eventscheduler.SchedulerApplication
 import co.cdmunoz.eventscheduler.di.SchedulerFactory
 import co.cdmunoz.eventscheduler.entity.Event
-import co.cdmunoz.eventscheduler.ui.add.AddEventActivity
+import co.cdmunoz.eventscheduler.ui.event.add.AddEventActivity
+import co.cdmunoz.eventscheduler.utils.toast
 import kotlinx.android.synthetic.main.activity_list_event.fab_add
 import kotlinx.android.synthetic.main.activity_list_event.recycler_view_list_events
 import java.util.ArrayList
@@ -29,7 +30,7 @@ class EventListActivity : LifecycleActivity() {
 
   private val itemClickListener = View.OnClickListener { v ->
     val (_, name) = v.tag as Event
-    Toast.makeText(this, "Clicked:" + name, Toast.LENGTH_LONG).show()
+    toast("Clicked:" + name, Toast.LENGTH_LONG)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,5 +59,10 @@ class EventListActivity : LifecycleActivity() {
       adapter.items = events!!
     })
 
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    eventListViewModel.destroy()
   }
 }

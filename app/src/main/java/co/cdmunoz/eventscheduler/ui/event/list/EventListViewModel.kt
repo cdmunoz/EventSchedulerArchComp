@@ -7,10 +7,9 @@ import android.arch.lifecycle.ViewModel
 import co.cdmunoz.eventscheduler.di.SchedulerComponent
 import co.cdmunoz.eventscheduler.entity.Event
 import co.cdmunoz.eventscheduler.repository.EventRepository
-import io.reactivex.CompletableObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import co.cdmunoz.eventscheduler.utils.async
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableCompletableObserver
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -18,6 +17,7 @@ class EventListViewModel : ViewModel(), SchedulerComponent.Injectable {
 
   @Inject
   lateinit var eventRepository: EventRepository
+  val disposables: CompositeDisposable = CompositeDisposable()
 
   var events: LiveData<List<Event>> = MutableLiveData()
     private set
@@ -28,22 +28,21 @@ class EventListViewModel : ViewModel(), SchedulerComponent.Injectable {
   }
 
   fun deleteEvent(event: Event) {
-    eventRepository.deleteEvent(event)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(object : CompletableObserver {
-          override fun onSubscribe(d: Disposable) {
-
-          }
+    eventRepository.deleteEvent(event).async()
+        .subscribe(object : DisposableCompletableObserver() {
 
           override fun onComplete() {
-            Timber.d("onComplete - deleted event")
+            Timber.d("onComplete - deleted event -> " + event.name)
           }
 
           override fun onError(e: Throwable) {
-            Timber.e("OnError - deleted event: ", e)
+            Timber.e("OnError - Error trying to delete event: " + event.name, e)
           }
         })
+  }
+
+  fun destroy() {
+    disposables.dispose()
   }
 
 }

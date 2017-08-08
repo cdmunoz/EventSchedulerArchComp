@@ -10,7 +10,7 @@ class SchedulerFactory(
   override fun <T : ViewModel> create(modelClass: Class<T>): T {
     val t = super.create(modelClass)
     if (t is SchedulerComponent.Injectable) {
-      t.inject(application.countDownComponent)
+      t.inject(application.schedulerComponent)
     }
     return t
   }

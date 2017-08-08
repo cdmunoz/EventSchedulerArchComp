@@ -5,9 +5,9 @@
     <application
         android:name="co.cdmunoz.eventscheduler.SchedulerApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_scheduler_app"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_scheduler_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.event.list.EventListActivity">
@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="co.cdmunoz.eventscheduler.ui.add.AddEventActivity"
+            android:name="co.cdmunoz.eventscheduler.ui.event.add.AddEventActivity"
             android:windowSoftInputMode="adjustResize" />
     </application>
 
