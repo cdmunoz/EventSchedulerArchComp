@@ -25,12 +25,14 @@ class EventListActivity : LifecycleActivity() {
   private lateinit var eventListViewModel: EventListViewModel
 
   private val deleteClickListener: View.OnClickListener = View.OnClickListener { v ->
-    eventListViewModel.deleteEvent(v.tag as Event)
+    val event = v.tag as Event
+    eventListViewModel.deleteEvent(event)
+    toast("Event deleted: " + event.name, Toast.LENGTH_LONG)
   }
 
   private val itemClickListener = View.OnClickListener { v ->
     val (_, name) = v.tag as Event
-    toast("Clicked:" + name, Toast.LENGTH_LONG)
+    toast("Clicked: " + name, Toast.LENGTH_LONG)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
